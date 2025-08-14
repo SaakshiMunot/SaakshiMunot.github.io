@@ -1,4 +1,6 @@
-# Portfolio Website - Next.js
+# Saakshi Munot's Portfolio
+
+My personal portfolio website, where you can learn more about me 😊
 
 This is a modern portfolio website built with Next.js 15, featuring a beautiful interactive design with 3D elements and smooth animations.
 
@@ -19,7 +21,7 @@ This is a modern portfolio website built with Next.js 15, featuring a beautiful 
 - **About** - Personal information with image gallery
 - **Projects** - Showcase of work with detailed project cards
 - **Experience** - Professional experience timeline
-- **Skills** - Technical skills and expertise
+- **Photography** - Photo gallery
 
 ## Getting Started
 
@@ -32,8 +34,8 @@ This is a modern portfolio website built with Next.js 15, featuring a beautiful 
 
 1. Clone the repository
 ```bash
-git clone <repository-url>
-cd portfolio
+git clone https://github.com/SaakshiMunot/SaakshiMunot.github.io.git
+cd SaakshiMunot.github.io
 ```
 
 2. Install dependencies
@@ -65,7 +67,7 @@ npm run dev
 │   ├── about/             # About page
 │   ├── projects/          # Projects page
 │   ├── experience/        # Experience page
-│   └── skills/            # Skills page
+│   └── photography/       # Photography page
 ├── components/            # Reusable components
 │   ├── ui/               # UI components
 │   └── ...               # Feature components
