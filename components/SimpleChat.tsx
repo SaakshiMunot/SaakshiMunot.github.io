@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Send, User, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { apiEndpoints } from "@/lib/api-config";
 
 interface Message {
 	id: string;
@@ -174,7 +175,7 @@ export function SimpleChat() {
 		setIsTyping(true);
 
 		try {
-			const res = await fetch("/api/chat", {
+			const res = await fetch(apiEndpoints.chat, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

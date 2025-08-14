@@ -8,7 +8,12 @@ const nextConfig = {
     });
     return config;
   },
+  // Enable static export for GitHub Pages
+  output: process.env.BUILD_MODE === 'static' ? 'export' : undefined,
+  trailingSlash: process.env.BUILD_MODE === 'static' ? true : false,
+  // Configure images for both static export and normal mode
   images: {
+    unoptimized: process.env.BUILD_MODE === 'static' ? true : false,
     domains: ['prod.spline.design'],
   },
 }

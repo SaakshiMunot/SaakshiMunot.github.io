@@ -5,6 +5,7 @@ import { X, ChevronLeft, ChevronRight, Download, ExternalLink, Camera, MapPin, C
 import { InteractiveBackground } from "@/components/InteractiveBackground";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { apiEndpoints } from "@/lib/api-config";
 
 // Photography data - automatically populated from directory
 interface Photo {
@@ -89,7 +90,7 @@ export default function Photography() {
   // Scan the photography directory via API
   const scanPhotographyDirectory = async (): Promise<Photo[]> => {
     try {
-      const response = await fetch('/api/photography');
+      const response = await fetch(apiEndpoints.photography);
       if (!response.ok) {
         throw new Error('Failed to fetch photos');
       }
