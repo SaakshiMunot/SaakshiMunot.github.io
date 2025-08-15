@@ -10,6 +10,8 @@ This guide explains how to deploy your portfolio with GitHub Pages hosting the s
 
 ## Step-by-Step Setup
 
+**IMPORTANT**: Follow these steps in exact order!
+
 ### 1. Deploy to Vercel (API Backend)
 
 1. **Connect your repository to Vercel:**
@@ -34,7 +36,9 @@ This guide explains how to deploy your portfolio with GitHub Pages hosting the s
    - Go to your GitHub repository
    - Navigate to Settings → Secrets and variables → Actions
    - Under "Variables" tab, add:
-     - `NEXT_PUBLIC_API_URL`: Your Vercel deployment URL
+     - `NEXT_PUBLIC_API_URL`: Your Vercel deployment URL (e.g., `https://your-project.vercel.app`)
+   
+   **⚠️ CRITICAL**: Make sure to use your actual Vercel deployment URL, not a placeholder!
 
 ### 3. Deploy to GitHub Pages (Frontend)
 
@@ -104,6 +108,12 @@ The `lib/api-config.ts` file automatically detects the environment:
 2. **Verify Configuration**: Make sure `BUILD_MODE` is NOT set in Vercel environment variables
 3. **Framework Detection**: Ensure Vercel detects your project as Next.js
 4. **Clear Vercel Cache**: In Vercel dashboard, go to Settings → Advanced → Clear Build Cache
+
+### Chat API Returns 404 or 405 from GitHub Pages
+1. **Check API URL**: Verify `NEXT_PUBLIC_API_URL` is set correctly in GitHub repository variables
+2. **Check Vercel URL**: Make sure the URL in GitHub variables matches your actual Vercel deployment
+3. **CORS Issues**: API routes now include CORS headers, but verify in browser dev tools
+4. **Invalid URL Format**: The error `@https://saakshimunot.github.io/saakshi-munot-github-io.vercel.app/api/chat` indicates incorrect URL concatenation
 
 ### Chat not working on GitHub Pages
 1. Check browser console for errors

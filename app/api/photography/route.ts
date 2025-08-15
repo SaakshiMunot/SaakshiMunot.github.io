@@ -6,6 +6,20 @@ import path from 'path';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+// Add CORS headers to response
+function addCorsHeaders(response: NextResponse) {
+	response.headers.set('Access-Control-Allow-Origin', '*');
+	response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+	response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	return response;
+}
+
+// Handle CORS preflight requests
+export async function OPTIONS() {
+	const response = new NextResponse(null, { status: 200 });
+	return addCorsHeaders(response);
+}
+
 export async function GET() {
   try {
     const photographyDir = path.join(process.cwd(), 'public', 'photography');
@@ -15,7 +29,8 @@ export async function GET() {
       await fs.access(photographyDir);
     } catch {
       // Directory doesn't exist, return empty array
-      return NextResponse.json({ photos: [] });
+      const response = NextResponse.json({ photos: [] });
+      return addCorsHeaders(response);
     }
 
     // Read all files in the directory
@@ -87,13 +102,15 @@ export async function GET() {
       };
     });
 
-    return NextResponse.json({ photos });
+    const response = NextResponse.json({ photos });
+    return addCorsHeaders(response);
   } catch (error) {
     console.error('Error scanning photography directory:', error);
-    return NextResponse.json(
+    const errorResponse = NextResponse.json(
       { error: 'Failed to scan photography directory' },
       { status: 500 }
     );
+    return addCorsHeaders(errorResponse);
   }
 }
 

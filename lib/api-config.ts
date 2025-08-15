@@ -11,8 +11,16 @@ export const getApiBaseUrl = (): string => {
     }
     
     // In production (GitHub Pages), use the Vercel API URL
-    // First check environment variable, then fall back to default
-    return process.env.NEXT_PUBLIC_API_URL || 'https://portfolio-jade-five-30.vercel.app';
+    // This should be set as NEXT_PUBLIC_API_URL in GitHub repository variables
+    // The URL should be your actual Vercel deployment URL
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    
+    if (!apiUrl) {
+      console.error('NEXT_PUBLIC_API_URL not configured. Please set it in GitHub repository variables.');
+      return 'https://your-vercel-deployment.vercel.app'; // This will cause a 404 to highlight the missing config
+    }
+    
+    return apiUrl;
   }
   
   // Server-side fallback

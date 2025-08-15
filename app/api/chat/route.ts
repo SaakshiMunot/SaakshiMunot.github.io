@@ -8,10 +8,25 @@ export const dynamic = 'force-dynamic';
 
 const MODEL = 'gpt-4o-mini';
 
+// Add CORS headers to response
+function addCorsHeaders(response: NextResponse) {
+	response.headers.set('Access-Control-Allow-Origin', '*');
+	response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+	response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	return response;
+}
+
+// Handle CORS preflight requests
+export async function OPTIONS() {
+	const response = new NextResponse(null, { status: 200 });
+	return addCorsHeaders(response);
+}
+
 export async function POST(req: Request) {
 	try {
 		if (!process.env.OPENAI_API_KEY) {
-			return NextResponse.json({ error: 'Server missing OPENAI_API_KEY' }, { status: 500 });
+			const errorResponse = NextResponse.json({ error: 'Server missing OPENAI_API_KEY' }, { status: 500 });
+			return addCorsHeaders(errorResponse);
 		}
 
 		const body = await req.json().catch(() => ({}));
@@ -19,7 +34,8 @@ export async function POST(req: Request) {
 		const user = messages.length ? messages[messages.length - 1]?.content ?? '' : body?.content ?? '';
 
 		if (typeof user !== 'string' || user.trim().length === 0) {
-			return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+			const errorResponse = NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+			return addCorsHeaders(errorResponse);
 		}
 
 		const contexts = await retrieve(user, 6);
@@ -82,9 +98,11 @@ export async function POST(req: Request) {
         };
 
         const reply = baseReply + buildCtaFromUserQuery(user, baseReply);
-        return NextResponse.json({ reply });
+        const response = NextResponse.json({ reply });
+        return addCorsHeaders(response);
 	} catch (e) {
 		console.error(e);
-		return NextResponse.json({ error: 'Unexpected error' }, { status: 500 });
+		const errorResponse = NextResponse.json({ error: 'Unexpected error' }, { status: 500 });
+		return addCorsHeaders(errorResponse);
 	}
 }
