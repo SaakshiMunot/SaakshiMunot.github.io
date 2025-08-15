@@ -5,7 +5,7 @@
 export const getApiBaseUrl = (): string => {
   // In production (GitHub Pages), use the Vercel API URL
   if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
-    return process.env.NEXT_PUBLIC_API_URL || 'https://your-vercel-deployment.vercel.app';
+    return process.env.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-io.vercel.app';
   }
   
   // In development, use local API
