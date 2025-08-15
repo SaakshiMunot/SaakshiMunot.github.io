@@ -5,8 +5,6 @@ import { X, ChevronLeft, ChevronRight, Download, ExternalLink, Camera, MapPin, C
 import { InteractiveBackground } from "@/components/InteractiveBackground";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { apiEndpoints } from "@/lib/api-config";
-
 // Photography data - automatically populated from directory
 interface Photo {
   id: number;
@@ -36,9 +34,8 @@ export default function Photography() {
   useEffect(() => {
     const generatePhotosFromDirectory = async () => {
       try {
-        // This would typically be an API call to scan the directory
-        // For now, we'll simulate it with a dynamic approach
-        const mockPhotos = await scanPhotographyDirectory();
+        // Load photography data from static JSON
+        const mockPhotos = await loadPhotographyData();
         
         // Extract unique categories from photos
         const categorySet = new Set(mockPhotos.map(photo => photo.category));
@@ -88,17 +85,19 @@ export default function Photography() {
     };
   }, [selectedPhoto, currentPhotoIndex, photos]);
 
-  // Scan the photography directory via API
-  const scanPhotographyDirectory = async (): Promise<Photo[]> => {
+  // Load photography data from static JSON
+  const loadPhotographyData = async (): Promise<Photo[]> => {
     try {
-      const response = await fetch(apiEndpoints.photography);
+      // In static export, this will be a relative path to the generated JSON
+      const response = await fetch('/data/photography.json');
       if (!response.ok) {
-        throw new Error('Failed to fetch photos');
+        throw new Error('Failed to fetch photography data');
       }
       const data = await response.json();
       return data.photos || [];
     } catch (error) {
-      console.error('Error fetching photos:', error);
+      console.error('Error loading photography data:', error);
+      // Fallback to empty array if data can't be loaded
       return [];
     }
   };
@@ -144,11 +143,9 @@ export default function Photography() {
     };
   };
 
-  // Function to add new photos (you can call this when new images are added to the directory)
-  const addNewPhotos = async () => {
-    // This would typically scan the directory for new images
-    // For now, you can manually add new photos to the scanPhotographyDirectory function
-    const newPhotos = await scanPhotographyDirectory();
+  // Function to refresh photography data
+  const refreshPhotographyData = async () => {
+    const newPhotos = await loadPhotographyData();
     setPhotos(newPhotos);
     
     // Update categories
@@ -298,7 +295,7 @@ export default function Photography() {
                 <p className="text-muted-foreground mb-4">
                   No photos match the selected category. Try selecting a different category or add some photos!
                 </p>
-                <Button onClick={addNewPhotos} variant="outline" size="sm">
+                <Button onClick={refreshPhotographyData} variant="outline" size="sm">
                   <Camera size={16} className="mr-2" />
                   Refresh Collection
                 </Button>

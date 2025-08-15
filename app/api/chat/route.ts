@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { retrieve } from '@/lib/rag';
 
+// Configure for static export
+export const dynamic = 'force-static';
+
 const MODEL = 'gpt-4o-mini';
 
 export async function POST(req: Request) {

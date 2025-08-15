@@ -1,5 +1,4 @@
 import { InteractiveBackground } from "@/components/InteractiveBackground";
-import { SimpleChat } from "@/components/SimpleChat";
 import Spline from '@splinetool/react-spline/next';
 import { AnimatedName } from "@/components/AnimatedName";
 import Link from "next/link";
@@ -27,9 +26,14 @@ export default function Home() {
                 </span>
               </p>
 
-              {/* Chat Interface */}
-              <div className="w-full">
+              {/* Chat Interface - Temporarily disabled for static export */}
+              {/* <div className="w-full">
                 <SimpleChat />
+              </div> */}
+              <div className="w-full text-center py-4">
+                <p className="text-muted-foreground">
+                  AI Chat temporarily unavailable in static version
+                </p>
               </div>
             </div>
 

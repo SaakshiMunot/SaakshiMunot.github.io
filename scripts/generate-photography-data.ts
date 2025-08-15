@@ -1,11 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 
-// Configure for static export
-export const dynamic = 'force-static';
+interface Photo {
+  id: number;
+  title: string;
+  category: string;
+  imageUrl: string;
+  tags: string[];
+  filename: string;
+  date?: string;
+}
 
-export async function GET() {
+async function generatePhotographyData() {
   try {
     const photographyDir = path.join(process.cwd(), 'public', 'photography');
     
@@ -13,8 +19,12 @@ export async function GET() {
     try {
       await fs.access(photographyDir);
     } catch {
-      // Directory doesn't exist, return empty array
-      return NextResponse.json({ photos: [] });
+      console.log('Photography directory not found, generating empty data');
+      await fs.writeFile(
+        path.join(process.cwd(), 'data', 'photography.json'),
+        JSON.stringify({ photos: [] }, null, 2)
+      );
+      return;
     }
 
     // Read all files in the directory
@@ -28,7 +38,7 @@ export async function GET() {
     });
 
     // Generate photo objects from filenames
-    const photos = imageFiles.map((filename, index) => {
+    const photos: Photo[] = imageFiles.map((filename, index) => {
       const nameWithoutExt = filename.replace(/\.[^/.]+$/, "");
       const words = nameWithoutExt.split(/[-_\s]+/);
       
@@ -86,13 +96,23 @@ export async function GET() {
       };
     });
 
-    return NextResponse.json({ photos });
+    // Write the data to both data/ and public/data/ directories
+    const dataPath = path.join(process.cwd(), 'data', 'photography.json');
+    const publicDataPath = path.join(process.cwd(), 'public', 'data', 'photography.json');
+    
+    // Ensure public/data directory exists
+    await fs.mkdir(path.join(process.cwd(), 'public', 'data'), { recursive: true });
+    
+    await fs.writeFile(dataPath, JSON.stringify({ photos }, null, 2));
+    await fs.writeFile(publicDataPath, JSON.stringify({ photos }, null, 2));
+    
+    console.log(`Generated photography data with ${photos.length} photos`);
+    console.log(`Data written to: ${dataPath}`);
+    console.log(`Data written to: ${publicDataPath}`);
   } catch (error) {
-    console.error('Error scanning photography directory:', error);
-    return NextResponse.json(
-      { error: 'Failed to scan photography directory' },
-      { status: 500 }
-    );
+    console.error('Error generating photography data:', error);
+    process.exit(1);
   }
 }
 
+generatePhotographyData();
