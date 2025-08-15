@@ -29,7 +29,7 @@ jobs:
     - name: Build static site
       run: npm run build:static
       env:
-        NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL || 'https://portfolio-jade-five-30.vercel.app' }}
+        NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-o1231eop9-saakshimunots-projects.vercel.app' }}
 
     - name: Setup Pages
       uses: actions/configure-pages@v4

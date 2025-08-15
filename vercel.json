@@ -1,19 +1,7 @@
 {
-  "buildCommand": "npm run build",
   "functions": {
-    "app/api/chat/route.ts": {
+    "app/api/*/route.ts": {
       "maxDuration": 30
-    },
-    "app/api/photography/route.ts": {
-      "maxDuration": 10
-    }
-  },
-  "env": {
-    "OPENAI_API_KEY": "@openai_api_key"
-  },
-  "build": {
-    "env": {
-      "BUILD_MODE": ""
     }
   },
   "headers": [

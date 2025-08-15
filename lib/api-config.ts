@@ -17,14 +17,14 @@ export const getApiBaseUrl = (): string => {
     
     if (!apiUrl) {
       console.error('NEXT_PUBLIC_API_URL not configured. Please set it in GitHub repository variables.');
-      return 'https://your-vercel-deployment.vercel.app'; // This will cause a 404 to highlight the missing config
+      return 'https://saakshi-munot-github-o1231eop9-saakshimunots-projects.vercel.app'; // Fallback to actual Vercel deployment
     }
     
     return apiUrl;
   }
   
   // Server-side fallback
-  return process.env.NEXT_PUBLIC_API_URL || '';
+  return process.env.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-o1231eop9-saakshimunots-projects.vercel.app';
 };
 
 export const apiEndpoints = {

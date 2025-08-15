@@ -94,9 +94,37 @@ NEXT_PUBLIC_API_URL=https://your-vercel-deployment.vercel.app
 
 ## Troubleshooting
 
-1. **Chat not working**: Check that `NEXT_PUBLIC_API_URL` is set correctly in GitHub Actions
-2. **API errors**: Verify `OPENAI_API_KEY` is set in Vercel environment variables
-3. **Photography page empty**: Ensure the photography API is deployed and accessible
+### Common Issues and Solutions
+
+1. **APIs not working on Vercel deployment**:
+   - Make sure `vercel.json` is properly configured (no `buildCommand` or `env` sections)
+   - Use pattern `app/api/*/route.ts` for function configurations
+   - Verify `OPENAI_API_KEY` is set in Vercel environment variables: `vercel env list`
+   - Redeploy with: `vercel --prod`
+
+2. **Chat not working**: Check that `NEXT_PUBLIC_API_URL` is set correctly in GitHub Actions
+
+3. **API errors**: Verify `OPENAI_API_KEY` is set in Vercel environment variables
+
+4. **Photography page empty**: Ensure the photography API is deployed and accessible
+
+5. **CORS errors**: APIs include proper CORS headers, but if issues persist, check the `headers` section in `vercel.json`
+
+### Testing APIs
+
+To test your APIs after deployment:
+```bash
+# Get your deployment URL from vercel ls
+vercel ls
+
+# Test photography API
+curl -X GET "https://your-deployment-url.vercel.app/api/photography"
+
+# Test chat API
+curl -X POST "https://your-deployment-url.vercel.app/api/chat" \
+  -H "Content-Type: application/json" \
+  -d '{"messages": [{"role": "user", "content": "Hello"}]}'
+```
 
 ## Custom Domain (Optional)
 
