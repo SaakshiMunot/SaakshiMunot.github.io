@@ -13,8 +13,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:static": "npm run generate:photography && npm run build:static:safe",
-    "build:static:safe": "if exist app\\api (move app\\api api_backup) && cross-env BUILD_MODE=static next build && if exist api_backup (move api_backup app\\api)",
+    "build:static": "npm run generate:photography && npm run build:static:prepare && cross-env BUILD_MODE=static next build && npm run build:static:restore",
+    "build:static:prepare": "test -d app/api && mv app/api api_backup || echo 'No API folder to backup'",
+    "build:static:restore": "test -d api_backup && mv api_backup app/api || echo 'No API backup to restore'",
     "generate:photography": "tsx scripts/generate-photography-data.ts",
     "start": "next start",
     "lint": "next lint",
