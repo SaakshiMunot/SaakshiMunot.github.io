@@ -38,7 +38,17 @@ export const getApiBaseUrl = (): string => {
   return process.env.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-io.vercel.app';
 };
 
+// Normalize base URL (remove trailing slashes) and safely join paths
+const normalizeBaseUrl = (url: string): string => url.replace(/\/+$/g, '');
+const joinUrl = (base: string, path: string): string => {
+  const normalizedBase = normalizeBaseUrl(base || '');
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${normalizedBase}${normalizedPath}`;
+};
+
+const API_BASE = normalizeBaseUrl(getApiBaseUrl());
+
 export const apiEndpoints = {
-  chat: `${getApiBaseUrl()}/api/chat`,
-  photography: `${getApiBaseUrl()}/api/photography`,
+  chat: joinUrl(API_BASE, '/api/chat'),
+  photography: joinUrl(API_BASE, '/api/photography'),
 } as const;
