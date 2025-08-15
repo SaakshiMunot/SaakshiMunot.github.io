@@ -3,13 +3,20 @@
  */
 
 export const getApiBaseUrl = (): string => {
-  // In production (GitHub Pages), use the Vercel API URL
-  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
-    return process.env.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-io.vercel.app';
+  // Check if we're in the browser
+  if (typeof window !== 'undefined') {
+    // In development, use local API
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return '';
+    }
+    
+    // In production (GitHub Pages), use the Vercel API URL
+    // First check environment variable, then fall back to default
+    return process.env.NEXT_PUBLIC_API_URL || 'https://portfolio-jade-five-30.vercel.app';
   }
   
-  // In development, use local API
-  return '';
+  // Server-side fallback
+  return process.env.NEXT_PUBLIC_API_URL || '';
 };
 
 export const apiEndpoints = {
