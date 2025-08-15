@@ -26,10 +26,32 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Get latest Vercel deployment URL
+      id: get-vercel-url
+      run: |
+        # Try to get the latest deployment URL from Vercel API
+        if [ -n "${{ secrets.VERCEL_TOKEN }}" ]; then
+          echo "Fetching latest Vercel deployment URL..."
+          VERCEL_URL=$(curl -s -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            "https://api.vercel.com/v6/deployments?projectId=prj_Vin6lrLJOTmB3MuyB4Pw0qwCOpkv&state=READY&limit=1" | \
+            jq -r '.deployments[0].url' 2>/dev/null || echo "")
+          
+          if [ -n "$VERCEL_URL" ] && [ "$VERCEL_URL" != "null" ]; then
+            echo "Found latest deployment: https://$VERCEL_URL"
+            echo "api_url=https://$VERCEL_URL" >> $GITHUB_OUTPUT
+          else
+            echo "Could not fetch from API, using configured URL"
+            echo "api_url=${{ vars.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-o1231eop9-saakshimunots-projects.vercel.app' }}" >> $GITHUB_OUTPUT
+          fi
+        else
+          echo "No Vercel token configured, using fallback URL"
+          echo "api_url=${{ vars.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-o1231eop9-saakshimunots-projects.vercel.app' }}" >> $GITHUB_OUTPUT
+        fi
+
     - name: Build static site
       run: npm run build:static
       env:
-        NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-o1231eop9-saakshimunots-projects.vercel.app' }}
+        NEXT_PUBLIC_API_URL: ${{ steps.get-vercel-url.outputs.api_url }}
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
