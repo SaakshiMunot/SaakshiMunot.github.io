@@ -10,21 +10,32 @@ export const getApiBaseUrl = (): string => {
       return '';
     }
     
-    // In production (GitHub Pages), use the Vercel API URL
-    // This should be set as NEXT_PUBLIC_API_URL in GitHub repository variables
-    // The URL should be your actual Vercel deployment URL
+    // Check if we're on the main Vercel domain (latest deployment)
+    if (window.location.hostname.includes('saakshi-munot-github-io.vercel.app')) {
+      // We're on the main Vercel domain, use current origin
+      return window.location.origin;
+    }
+    
+    // Check if we're on a specific Vercel deployment
+    if (window.location.hostname.includes('saakshi-munot-github') && window.location.hostname.includes('vercel.app')) {
+      // We're on a specific Vercel deployment, use current origin
+      return window.location.origin;
+    }
+    
+    // For GitHub Pages or other deployments, use the configured API URL
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     
     if (!apiUrl) {
-      console.error('NEXT_PUBLIC_API_URL not configured. Please set it in GitHub repository variables.');
-      return 'https://saakshi-munot-github-o1231eop9-saakshimunots-projects.vercel.app'; // Fallback to actual Vercel deployment
+      // Fallback: try to determine the latest Vercel URL dynamically
+      console.warn('NEXT_PUBLIC_API_URL not configured. Using main Vercel domain as fallback.');
+      return 'https://saakshi-munot-github-io.vercel.app';
     }
     
     return apiUrl;
   }
   
   // Server-side fallback
-  return process.env.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-o1231eop9-saakshimunots-projects.vercel.app';
+  return process.env.NEXT_PUBLIC_API_URL || 'https://saakshi-munot-github-io.vercel.app';
 };
 
 export const apiEndpoints = {
