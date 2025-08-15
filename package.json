@@ -13,7 +13,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:static": "npm run generate:photography && cross-env BUILD_MODE=static next build",
+    "build:static": "npm run generate:photography && npm run build:static:safe",
+    "build:static:safe": "if exist app\\api (move app\\api api_backup) && cross-env BUILD_MODE=static next build && if exist api_backup (move api_backup app\\api)",
     "generate:photography": "tsx scripts/generate-photography-data.ts",
     "start": "next start",
     "lint": "next lint",

@@ -15,15 +15,17 @@ This guide explains how to deploy your portfolio with GitHub Pages hosting the s
 1. **Connect your repository to Vercel:**
    - Go to [vercel.com](https://vercel.com)
    - Import your GitHub repository
-   - Choose "Other" framework preset (since we're only using API routes)
+   - Choose "Next.js" framework preset
+   - **Important**: Do NOT set any build command override - let Vercel use the default
 
 2. **Configure Environment Variables in Vercel:**
    - Go to your project settings in Vercel
    - Add environment variable:
      - `OPENAI_API_KEY`: Your OpenAI API key
+   - **Do NOT set BUILD_MODE** - leave it unset for Vercel
 
 3. **Deploy:**
-   - Vercel will automatically deploy your API routes
+   - Vercel will automatically deploy with full Next.js functionality (including API routes)
    - Note down your Vercel deployment URL (e.g., `https://your-project.vercel.app`)
 
 ### 2. Configure GitHub Repository Variables
@@ -97,6 +99,12 @@ The `lib/api-config.ts` file automatically detects the environment:
 
 ## Troubleshooting
 
+### Vercel Deployment Fails with "No Deployment"
+1. **Check Build Command**: Ensure Vercel is using default Next.js build (not custom command)
+2. **Verify Configuration**: Make sure `BUILD_MODE` is NOT set in Vercel environment variables
+3. **Framework Detection**: Ensure Vercel detects your project as Next.js
+4. **Clear Vercel Cache**: In Vercel dashboard, go to Settings → Advanced → Clear Build Cache
+
 ### Chat not working on GitHub Pages
 1. Check browser console for errors
 2. Verify `NEXT_PUBLIC_API_URL` is set correctly in GitHub Actions
@@ -109,8 +117,9 @@ The `lib/api-config.ts` file automatically detects the environment:
 3. Check function timeout settings
 
 ### Environment Variables
-- `NEXT_PUBLIC_API_URL`: Must be set in GitHub repository variables
-- `OPENAI_API_KEY`: Must be set in Vercel environment variables
+- **For GitHub Pages**: Set `NEXT_PUBLIC_API_URL` in GitHub repository variables
+- **For Vercel**: Set `OPENAI_API_KEY` in Vercel environment variables
+- **Important**: Do NOT set `BUILD_MODE` in Vercel (leave it unset)
 
 ## URLs
 

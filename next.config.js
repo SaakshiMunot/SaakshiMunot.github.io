@@ -8,14 +8,24 @@ const nextConfig = {
     });
     return config;
   },
-  // Enable static export for GitHub Pages
-  output: process.env.BUILD_MODE === 'static' ? 'export' : undefined,
-  trailingSlash: process.env.BUILD_MODE === 'static' ? true : false,
-  // Configure images for both static export and normal mode
-  images: {
-    unoptimized: process.env.BUILD_MODE === 'static' ? true : false,
-    domains: ['prod.spline.design'],
-  },
+  
+  // Only enable static export for GitHub Pages builds
+  // Vercel builds will use default settings (SSR/API routes enabled)
+  ...(process.env.BUILD_MODE === 'static' && {
+    output: 'export',
+    trailingSlash: true,
+    images: {
+      unoptimized: true,
+      domains: ['prod.spline.design'],
+    },
+  }),
+  
+  // Default configuration for Vercel (when BUILD_MODE !== 'static')
+  ...((process.env.BUILD_MODE !== 'static') && {
+    images: {
+      domains: ['prod.spline.design'],
+    },
+  }),
 }
 
 export default nextConfig

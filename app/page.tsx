@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { projects } from "@/data/projects";
 import { experiences } from "@/data/experiences";
+import { SimpleChat } from "@/components/SimpleChat";
  
 
 export default function Home() {
@@ -27,14 +28,14 @@ export default function Home() {
               </p>
 
               {/* Chat Interface - Temporarily disabled for static export */}
-              {/* <div className="w-full">
+              <div className="w-full">
                 <SimpleChat />
-              </div> */}
-              <div className="w-full text-center py-4">
+              </div>
+              {/* <div className="w-full text-center py-4">
                 <p className="text-muted-foreground">
                   AI Chat temporarily unavailable in static version
                 </p>
-              </div>
+              </div> */}
             </div>
 
             {/* Right Column - Spline 3D Viewer */}

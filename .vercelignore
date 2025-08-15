@@ -1,0 +1,8 @@
+# Files to ignore during Vercel deployment
+out/
+.github/
+*.md
+!README.md
+.gitignore
+scripts/test-deployment.js
+DEPLOYMENT_GUIDE.md
