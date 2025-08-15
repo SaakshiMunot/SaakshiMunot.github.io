@@ -41,7 +41,8 @@ export default function Photography() {
         const mockPhotos = await scanPhotographyDirectory();
         
         // Extract unique categories from photos
-        const uniqueCategories = ["All", ...new Set(mockPhotos.map(photo => photo.category))];
+        const categorySet = new Set(mockPhotos.map(photo => photo.category));
+        const uniqueCategories = ["All", ...Array.from(categorySet)];
         
         setPhotos(mockPhotos);
         setCategories(uniqueCategories);
@@ -151,7 +152,8 @@ export default function Photography() {
     setPhotos(newPhotos);
     
     // Update categories
-    const uniqueCategories = ["All", ...new Set(newPhotos.map(photo => photo.category))];
+    const categorySet = new Set(newPhotos.map(photo => photo.category));
+    const uniqueCategories = ["All", ...Array.from(categorySet)];
     setCategories(uniqueCategories);
   };
 

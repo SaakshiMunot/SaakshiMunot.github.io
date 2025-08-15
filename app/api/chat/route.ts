@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         const baseReply = completion.choices[0]?.message?.content ?? 'Sorry, I could not generate a response.';
 
         // Append one relevant CTA link only when the user's latest message explicitly asks about it
-        function buildCtaFromUserQuery(u: string, r: string): string {
+        const buildCtaFromUserQuery = (u: string, r: string): string => {
             const text = String(u || '').toLowerCase();
             const alreadyHasAnyLink = ['/projects','/experience','/about','/photography'].some(p => r.includes(p));
             if (alreadyHasAnyLink) return '';
@@ -75,7 +75,7 @@ export async function POST(req: Request) {
                 }
             }
             return '';
-        }
+        };
 
         const reply = baseReply + buildCtaFromUserQuery(user, baseReply);
         return NextResponse.json({ reply });
