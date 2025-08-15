@@ -54,7 +54,7 @@ export const projects: Project[] = [
     teamSize: 5,
     duration: "Ongoing",
     liveUrl: "https://www.theinboxpilot.com/",
-    image: "/projects/inboxPilotLogo.webp",
+    image: "/projects/inboxPilot.png",
     status: "ongoing",
     priority: "high"
   },
