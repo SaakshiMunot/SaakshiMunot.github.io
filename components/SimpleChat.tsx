@@ -192,6 +192,14 @@ export function SimpleChat() {
 			const data = await res.json();
 			const replyText = typeof data?.reply === "string" ? data.reply : "Sorry, I couldn't respond.";
 
+			// Log model and token usage if available
+			if (data.model) {
+				console.log(`Response generated using ${data.model}`);
+				if (data.tokens) {
+					console.log(`Token usage: ${data.tokens.total} (${data.tokens.prompt} prompt + ${data.tokens.completion} completion)`);
+				}
+			}
+
 			const newMessage: Message = {
 				id: (Date.now() + 1).toString(),
 				content: replyText,
